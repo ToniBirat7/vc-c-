@@ -1,0 +1,50 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <filesystem> // Include standard filesystem library (C++17)
+using namespace std;
+
+// Namespace alias to make our code shorter and cleaner
+namespace fs = std::filesystem;
+
+// Helper function to read and print file contents line-by-line
+void print_file_content(const std::string& filepath) {
+    std::ifstream file(filepath);
+    if (!file.is_open()) {
+        std::cerr << "  Error: Could not open " << filepath << std::endl;
+        return;
+    }
+
+    std::string line;
+    int line_number = 1;
+    while (std::getline(file, line)) {
+        std::cout << "  [" << line_number << "] " << line << std::endl;
+        line_number++;
+    }
+    std::cout << std::endl;
+}
+
+int main() {
+    std::string target_dir = "sandbox";
+
+    // Check if the target directory exists and is indeed a directory
+    if (!fs::exists(target_dir) || !fs::is_directory(target_dir)) {
+        std::cerr << "Error: Target directory " << target_dir << " does not exist." << std::endl;
+        return 1;
+    }
+
+    std::cout << "Starting recursive traversal of: " << target_dir << "\n" << std::endl;
+
+    // fs::recursive_directory_iterator goes through everything in the folder
+    // and sub-folders recursively.
+    for (const auto& entry : fs::recursive_directory_iterator(target_dir)) {
+        // entry.path() gives us the path to the item.
+        // fs::is_regular_file ensures we don't try to open folders as if they were files.
+        if (fs::is_regular_file(entry.path())) {
+            std::cout << "File: " << entry.path().string() << std::endl;
+            print_file_content(entry.path().string());
+        }
+    }
+
+    return 0;
+}

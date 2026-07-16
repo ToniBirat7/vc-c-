@@ -1,0 +1,11 @@
+Core Problem: Version Controlling (Directory)
+
+- Switch between the states of the directory (but how)
+
+- As directories are composed of files, every files should be tracked and checked where there's change or not
+
+- How are we versioning? or how are we storing the versions? where files or what? how are we deciding the versions?
+
+- how do we see the changes? note down the changes? what will decide what has changed? (My first intution is say we've a dir mybills and inside this we've bill.txt file, say we want to keep track of the versions so for this i will read the directory structure and store somewhere and store it's content as well this will be my version 1, and then if there are sudden change and when i run my vc in this dir mybills such as vc stats, then as we've v1 we'll read all the files and we'll compare == new one (just pure single string matching) if matches then we don't have any changes (this will be done for each file) and if there are changes we'll note down the changes and store what changed in what file? at what line?
+
+this is my first intution, for this write a nested testing directory so that we can get our project upon and we'll write my intution first in c++ as start and then find problems with this and move forward with the solutions.
