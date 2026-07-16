@@ -7,7 +7,6 @@ using namespace std;
 namespace fs = filesystem;
 
 // Intution Test: Reading files recursivley
-
 void print_file_content(const string& filepath) {
     ifstream file(filepath);
     if (!file.is_open()) {
