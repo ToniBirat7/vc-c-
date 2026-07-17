@@ -24,6 +24,24 @@ void print_file_content(const std::string& filepath) {
     std::cout << std::endl;
 }
 
+string fnv1a_hash(const string &data) {
+    // 64-bit FNV-1a offset basis
+    uint64_t hash = 14695981039346656037ULL;
+    // 64-bit FNV-1a prime
+    uint64_t fnv_prime = 1099511628211ULL;
+
+    for (char c : data) {
+        hash ^= static_cast<uint64_t>(c);
+        hash *= fnv_prime;
+    }
+
+    // Convert the integer hash into a hex string (e.g. "d3b07384d113edec")
+    stringstream ss;
+    ss << hex << setw(16) << setfill('0') << hash;
+    return ss.str();
+
+}
+
 int main() {
     std::string target_dir = "sandbox";
 
