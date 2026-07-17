@@ -8,20 +8,41 @@ using namespace std;
 namespace fs = std::filesystem;
 
 // Helper function to read and print file contents line-by-line
-void print_file_content(const std::string& filepath) {
-    std::ifstream file(filepath);
+void print_file_content(const string& filepath) {
+    ifstream file(filepath);
     if (!file.is_open()) {
         std::cerr << "  Error: Could not open " << filepath << std::endl;
         return;
     }
 
-    std::string line;
+    string line;
     int line_number = 1;
-    while (std::getline(file, line)) {
+    while (getline(file, line)) {
         std::cout << "  [" << line_number << "] " << line << std::endl;
         line_number++;
     }
     std::cout << std::endl;
+}
+
+string get_file_content(const string& filepath) {
+
+    ifstream file(filepath);
+
+    if (!file.is_open()) {
+        std::cerr << "  Error: Could not open " << filepath << std::endl;
+        return "";
+    }
+
+    string line;
+    string content;
+    int line_number = 1;
+
+    while (getline(file, line)) {
+        content += line + "\n";
+        line_number++;
+    }
+
+    return content;
 }
 
 string fnv1a_hash(const string &data) {
@@ -60,7 +81,18 @@ int main() {
         // fs::is_regular_file ensures we don't try to open folders as if they were files.
         if (fs::is_regular_file(entry.path())) {
             std::cout << "File: " << entry.path().string() << std::endl;
-            print_file_content(entry.path().string());
+
+            string filepath = entry.path().string();
+
+            print_file_content(filepath);
+
+            // Hash and save the file content for that has hash
+            string hash = fnv1a_hash(get_file_content(filepath));
+
+            cout << "Hash for " << filepath << " is: " << hash << endl;
+
+            // Manifest to identify hash for files
+
         }
     }
 
